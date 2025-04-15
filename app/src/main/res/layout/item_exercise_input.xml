@@ -2,7 +2,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/rounded_background_grey"
     android:gravity="center_vertical">
 
     <EditText
@@ -10,21 +12,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:hint="Ejercicio" />
+        android:hint="Ejercicio"
+        android:textColor="@android:color/white"
+        android:textColorHint="#aaaaaa"
+        android:inputType="text"
+        android:backgroundTint="#888888" />
 
     <EditText
         android:id="@+id/inputReps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:hint="Reps"
         android:inputType="number"
-        android:hint="Reps" />
+        android:textColor="@android:color/white"
+        android:textColorHint="#aaaaaa"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="#888888" />
 
     <EditText
         android:id="@+id/inputWeight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:hint="Kg"
         android:inputType="number"
-        android:hint="Kg" />
+        android:textColor="@android:color/white"
+        android:textColorHint="#aaaaaa"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="#888888" />
 </LinearLayout>

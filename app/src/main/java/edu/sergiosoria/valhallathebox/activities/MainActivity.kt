@@ -4,12 +4,17 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import edu.sergiosoria.valhallathebox.R
+import edu.sergiosoria.valhallathebox.fragments.WodListFragment
 import edu.sergiosoria.valhallathebox.utils.CurrentUser
 
 class MainActivity : AppCompatActivity() {
@@ -55,23 +60,43 @@ class MainActivity : AppCompatActivity() {
 
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.nav_home -> true
+                R.id.nav_home -> {
+                    // Mostrar layout principal
+                    findViewById<CoordinatorLayout>(R.id.main).visibility = View.VISIBLE
+                    findViewById<FrameLayout>(R.id.fragment_container).visibility = View.GONE
+
+                    // Eliminar el fragment actual si está en el backstack
+                    supportFragmentManager.popBackStack()
+                    true
+                }
+
                 R.id.nav_profile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
                     true
                 }
+
                 R.id.nav_wod -> {
-                    startActivity(Intent(this, WodListActivity::class.java))
+                    // Ocultar main y mostrar fragmento
+                    findViewById<ScrollView>(R.id.scrollContent).visibility = View.GONE
+                    findViewById<FrameLayout>(R.id.fragment_container).visibility = View.VISIBLE
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, WodListFragment())
+                        .addToBackStack(null)
+                        .commit()
                     true
                 }
+
                 R.id.nav_schedule -> {
                     startActivity(Intent(this, HoraryActivity::class.java))
                     true
                 }
+
                 R.id.nav_shop -> {
                     startActivity(Intent(this, ShopActivity::class.java))
                     true
                 }
+
                 else -> false
             }
         }

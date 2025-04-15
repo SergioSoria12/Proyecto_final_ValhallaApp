@@ -8,6 +8,7 @@
     android:background="@color/black_theme">
 
     <ScrollView
+        android:id="@+id/scrollContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -155,6 +156,13 @@
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="64dp"
+        android:layout_gravity="top"
+        android:visibility="gone"/>
 
     <!-- NAVBAR INFERIOR -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

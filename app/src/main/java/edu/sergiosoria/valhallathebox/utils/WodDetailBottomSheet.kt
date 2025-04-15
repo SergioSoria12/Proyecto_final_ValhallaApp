@@ -16,8 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import edu.sergiosoria.valhallathebox.R
-import edu.sergiosoria.valhallathebox.activities.CreateWodActivity
+import edu.sergiosoria.valhallathebox.ValhallaApp
+import edu.sergiosoria.valhallathebox.fragments.CreateWodFragment
 import edu.sergiosoria.valhallathebox.database.AppDatabase
+import edu.sergiosoria.valhallathebox.fragments.WodListFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -71,9 +73,17 @@ class WodDetailBottomSheet(
         val btnDelete = view.findViewById<Button>(R.id.btnDeleteWod)
 
         btnEdit.setOnClickListener {
-            val intent = Intent(requireContext(), CreateWodActivity::class.java)
-            intent.putExtra("EDIT_WOD_ID", wodWithBlocks.wod.wodId)
-            startActivity(intent)
+            val fragment = CreateWodFragment().apply {
+                arguments = Bundle().apply {
+                    putLong("EDIT_WOD_ID", wodWithBlocks.wod.wodId)
+                }
+            }
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+
             dismiss()
         }
 
@@ -82,12 +92,17 @@ class WodDetailBottomSheet(
                 .setTitle("¿Eliminar WOD?")
                 .setMessage("¿Seguro que deseas eliminar este WOD?")
                 .setPositiveButton("Sí") { _, _ ->
-                    lifecycleScope.launch {
-                        val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "app-db").build()
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val db = ValhallaApp.database
                         db.wodDao().deleteWod(wodWithBlocks.wod)
+
                         withContext(Dispatchers.Main) {
                             Toast.makeText(requireContext(), "WOD eliminado", Toast.LENGTH_SHORT).show()
                             dismiss()
+
+                            parentFragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, WodListFragment())
+                                .commit()
                         }
                     }
                 }

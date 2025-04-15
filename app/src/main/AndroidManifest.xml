@@ -31,8 +31,8 @@
         <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.RegisterActivity"/>
         <activity android:name=".activities.MainActivity"/>
-        <activity android:name=".activities.WodListActivity" />
-        <activity android:name=".activities.CreateWodActivity" />
+        <activity android:name=".fragments.WodListFragment" />
+        <activity android:name=".fragments.CreateWodFragment" />
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.ShopActivity" />
         <activity android:name=".activities.HoraryActivity" />

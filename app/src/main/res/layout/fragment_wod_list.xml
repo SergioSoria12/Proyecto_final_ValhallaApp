@@ -3,7 +3,7 @@
     android:id="@+id/wodListRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f2f2">
+    android:background="#000000">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wodRecyclerView"
@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:padding="16dp"
         android:clipToPadding="false"
-        android:layout_above="@+id/fabAddWod"/>
+        android:layout_above="@+id/fabAddWod" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddWod"
