@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/createWodRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Tipo de WOD -->
+        <TextView
+            android:id="@+id/tvWodType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de WOD"
+            android:textSize="18sp"
+            android:textColor="#25476a"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/radioType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbEmom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EMOM"
+                android:textSize="16sp"
+                android:buttonTint="@color/white"
+                android:textColor="@color/white"
+                android:paddingEnd="16dp"/>
+
+            <RadioButton
+                android:id="@+id/rbAmrap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AMRAP"
+                android:textSize="16sp"
+                android:buttonTint="@color/white"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <!-- Selector de nivel -->
+        <RadioGroup
+            android:id="@+id/radioLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="left">
+
+            <RadioButton
+                android:id="@+id/rbScaled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scaled"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:buttonTint="@color/white"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp" />
+
+            <RadioButton
+                android:id="@+id/rbRX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RX"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:buttonTint="@color/white"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp" />
+
+            <RadioButton
+                android:id="@+id/rbElite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elite"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:buttonTint="@color/white"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <!-- Ejercicios -->
+        <LinearLayout
+            android:id="@+id/exerciseList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp" />
+
+        <!-- Botón para añadir ejercicio -->
+        <Button
+            android:id="@+id/btnAddExercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+ Añadir ejercicio"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#25476a"
+            android:textColor="#fff" />
+
+        <!-- Layout condicional para EMOM -->
+        <LinearLayout
+            android:id="@+id/layoutEmomData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/inputRounds"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Rondas"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textColorHint="#888888"
+                android:backgroundTint="#888888"
+                android:padding="12dp"
+                android:background="@drawable/rounded_gray"/>
+
+            <EditText
+                android:id="@+id/inputRoundTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:hint="Min por ronda"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textColorHint="#888888"
+                android:backgroundTint="#888888"
+                android:padding="12dp"
+                android:background="@drawable/rounded_gray"/>
+        </LinearLayout>
+
+        <!-- Layout condicional para AMRAP -->
+        <EditText
+            android:id="@+id/inputAmrapTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Minutos totales (AMRAP)"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textColorHint="#888888"
+            android:backgroundTint="#888888"
+            android:padding="12dp"
+            android:background="@drawable/rounded_gray"
+            android:visibility="gone" />
+
+        <!-- Botón Guardar -->
+        <Button
+            android:id="@+id/btnSaveWod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar WOD"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#28a745"
+            android:textColor="#fff" />
+    </LinearLayout>
+</ScrollView>

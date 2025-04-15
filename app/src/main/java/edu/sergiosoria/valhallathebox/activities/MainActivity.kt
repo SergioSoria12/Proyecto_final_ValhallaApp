@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_wod -> {
-                    startActivity(Intent(this, WodActivity::class.java))
+                    startActivity(Intent(this, WodListActivity::class.java))
                     true
                 }
                 R.id.nav_schedule -> {

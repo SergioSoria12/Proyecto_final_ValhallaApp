@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import edu.sergiosoria.valhallathebox.models.User
+import edu.sergiosoria.valhallathebox.models.Wod
+import edu.sergiosoria.valhallathebox.models.WodBlock
+import edu.sergiosoria.valhallathebox.models.ExerciseLine
 
-@Database(entities = [User::class], version = 16, exportSchema = false)
+@Database(entities = [User::class, Wod::class, WodBlock::class, ExerciseLine::class], version = 9, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun wodDao(): WodDao
 
 
     companion object {

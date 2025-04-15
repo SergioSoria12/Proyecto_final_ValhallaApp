@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingVertical="6dp">
+
+    <TextView
+        android:id="@+id/tvExerciseName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Push Jerk"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvExerciseReps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 reps" />
+
+    <TextView
+        android:id="@+id/tvExerciseWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="45 kg"
+        android:layout_marginStart="8dp"
+        android:textColor="#25476a" />
+</LinearLayout>

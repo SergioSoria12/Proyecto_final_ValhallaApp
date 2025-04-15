@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
     id("org.jetbrains.kotlin.kapt")
     id("com.google.gms.google-services")
 }
@@ -53,8 +52,8 @@ dependencies {
     implementation(libs.androidx.gridlayout)
     implementation("androidx.room:room-runtime:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
-    implementation(libs.androidx.adapters)
     kapt("androidx.room:room-compiler:2.5.2")
+    implementation(libs.androidx.adapters)
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-database-ktx:20.3.0")
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))

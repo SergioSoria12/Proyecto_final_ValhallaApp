@@ -31,7 +31,7 @@
         <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.RegisterActivity"/>
         <activity android:name=".activities.MainActivity"/>
-        <activity android:name=".activities.WodActivity" />
+        <activity android:name=".activities.WodListActivity" />
         <activity android:name=".activities.CreateWodActivity" />
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.ShopActivity" />
