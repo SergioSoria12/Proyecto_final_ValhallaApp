@@ -1,26 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/createWodRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:padding="16dp">
-
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="32dp"
+    android:paddingBottom="120dp"
+    android:clipToPadding="false"
+    android:fillViewport="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Nombre del WOD -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del WOD"
+            android:textColor="#25476a"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/inputWodName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Introduce el nombre del WOD"
+            android:background="@drawable/rounded_background_grey"
+            android:padding="12dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="#888888"
+            android:inputType="text" />
+
         <!-- Tipo de WOD -->
         <TextView
-            android:id="@+id/tvWodType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tipo de WOD"
-            android:textSize="18sp"
             android:textColor="#25476a"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
 
         <RadioGroup
             android:id="@+id/radioType"
@@ -36,7 +60,7 @@
                 android:textSize="16sp"
                 android:buttonTint="@color/white"
                 android:textColor="@color/white"
-                android:paddingEnd="16dp"/>
+                android:paddingEnd="16dp" />
 
             <RadioButton
                 android:id="@+id/rbAmrap"
@@ -48,24 +72,32 @@
                 android:textColor="@color/white" />
         </RadioGroup>
 
-        <!-- Selector de nivel -->
+        <!-- Nivel -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nivel"
+            android:textColor="#25476a"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
         <RadioGroup
             android:id="@+id/radioLevel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="left">
+            android:gravity="start">
 
             <RadioButton
                 android:id="@+id/rbScaled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Scaled"
-                android:textSize="16sp"
-                android:padding="12dp"
-                android:buttonTint="@color/white"
                 android:textColor="@color/white"
+                android:buttonTint="@color/white"
+                android:padding="12dp"
                 android:layout_marginEnd="8dp" />
 
             <RadioButton
@@ -73,10 +105,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RX"
-                android:textSize="16sp"
-                android:padding="12dp"
-                android:buttonTint="@color/white"
                 android:textColor="@color/white"
+                android:buttonTint="@color/white"
+                android:padding="12dp"
                 android:layout_marginEnd="8dp" />
 
             <RadioButton
@@ -84,13 +115,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Elite"
-                android:textSize="16sp"
-                android:padding="12dp"
+                android:textColor="@color/white"
                 android:buttonTint="@color/white"
-                android:textColor="@color/white" />
+                android:padding="12dp" />
         </RadioGroup>
 
-        <!-- Ejercicios -->
+        <!-- Lista ejercicios -->
         <LinearLayout
             android:id="@+id/exerciseList"
             android:layout_width="match_parent"
@@ -98,7 +128,7 @@
             android:orientation="vertical"
             android:layout_marginTop="16dp" />
 
-        <!-- Botón para añadir ejercicio -->
+        <!-- Botón añadir ejercicio -->
         <Button
             android:id="@+id/btnAddExercise"
             android:layout_width="match_parent"
@@ -108,44 +138,75 @@
             android:backgroundTint="#25476a"
             android:textColor="#fff" />
 
-        <!-- Layout condicional para EMOM -->
+        <!-- Botón seleccionar imagen -->
+        <Button
+            android:id="@+id/btnSelectImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar imagen"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#25476a"
+            android:textColor="#fff" />
+
+        <!-- Preview imagen -->
+        <ImageView
+            android:id="@+id/wodImagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <!-- Layout EMOM -->
         <LinearLayout
             android:id="@+id/layoutEmomData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="16dp"
             android:visibility="gone">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Número de rondas"
+                android:textColor="@color/white"
+                android:layout_marginBottom="4dp" />
+
             <EditText
                 android:id="@+id/inputRounds"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:hint="Rondas"
                 android:inputType="number"
                 android:textColor="@color/white"
                 android:textColorHint="#888888"
                 android:backgroundTint="#888888"
                 android:padding="12dp"
-                android:background="@drawable/rounded_background_grey"/>
+                android:background="@drawable/rounded_background_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minutos por ronda"
+                android:textColor="@color/white"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
             <EditText
                 android:id="@+id/inputRoundTime"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
                 android:hint="Min por ronda"
                 android:inputType="number"
                 android:textColor="@color/white"
                 android:textColorHint="#888888"
                 android:backgroundTint="#888888"
                 android:padding="12dp"
-                android:background="@drawable/rounded_background_grey"/>
+                android:background="@drawable/rounded_background_grey" />
         </LinearLayout>
 
-        <!-- Layout condicional para AMRAP -->
+        <!-- Layout AMRAP -->
         <EditText
             android:id="@+id/inputAmrapTime"
             android:layout_width="match_parent"
@@ -160,7 +221,7 @@
             android:background="@drawable/rounded_background_grey"
             android:visibility="gone" />
 
-        <!-- Botón Guardar -->
+        <!-- Botón guardar -->
         <Button
             android:id="@+id/btnSaveWod"
             android:layout_width="match_parent"

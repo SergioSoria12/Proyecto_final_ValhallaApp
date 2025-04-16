@@ -7,7 +7,8 @@
     android:background="@drawable/rounded_background_grey"
     android:gravity="center_vertical">
 
-    <EditText
+    <!-- Picker del ejercicio -->
+    <AutoCompleteTextView
         android:id="@+id/inputName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -15,21 +16,31 @@
         android:hint="Ejercicio"
         android:textColor="@android:color/white"
         android:textColorHint="#aaaaaa"
-        android:inputType="text"
         android:backgroundTint="#888888" />
 
+    <!-- Reps -->
     <EditText
         android:id="@+id/inputReps"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="Reps"
+        android:hint="Cantidad"
         android:inputType="number"
         android:textColor="@android:color/white"
         android:textColorHint="#aaaaaa"
         android:layout_marginStart="8dp"
         android:backgroundTint="#888888" />
 
+    <!-- Spinner unidad -->
+    <Spinner
+        android:id="@+id/spinnerUnidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:entries="@array/unidades"
+        android:theme="@style/ThemeOverlay.Material3.Dark" />
+
+    <!-- Kg -->
     <EditText
         android:id="@+id/inputWeight"
         android:layout_width="0dp"

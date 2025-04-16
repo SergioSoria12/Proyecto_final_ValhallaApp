@@ -17,6 +17,9 @@ interface WodDao {
     @Delete
     fun deleteWod(wod: Wod)
 
+    @Query("UPDATE Wod SET imageUri = :imageRes WHERE wodId = :id")
+    fun updateImage(id: Long, imageRes: String?)
+
     @Transaction
     @Query("SELECT * FROM Wod")
     fun getAllWods(): Flow<List<WodWithBlocks>>

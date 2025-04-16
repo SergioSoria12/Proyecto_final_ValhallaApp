@@ -3,11 +3,13 @@ package edu.sergiosoria.valhallathebox.utils
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -40,8 +42,15 @@ class WodDetailBottomSheet(
         val blocksContainer = view.findViewById<LinearLayout>(R.id.blocksContainer)
         val tvRounds = view.findViewById<TextView>(R.id.tvRounds)
         val tvTime = view.findViewById<TextView>(R.id.tvTime)
+        val imagePreview = view.findViewById<ImageView>(R.id.imageWodPreview)
 
         val wod = wodWithBlocks.wod
+
+        wod.imageUri?.let {
+            imagePreview.setImageURI(Uri.parse(it))
+            imagePreview.visibility = View.VISIBLE
+        }
+
         tvWodName.text = wod.type
         tvRounds.text = "${wod.rounds} RONDAS"
         tvTime.text = " - ${wod.roundTime} MIN ROUND"
@@ -60,7 +69,7 @@ class WodDetailBottomSheet(
                 val exerciseView = layoutInflater.inflate(R.layout.item_exercise_view, null)
 
                 exerciseView.findViewById<TextView>(R.id.tvExerciseName).text = ex.name
-                exerciseView.findViewById<TextView>(R.id.tvExerciseReps).text = "${ex.reps} reps"
+                exerciseView.findViewById<TextView>(R.id.tvExerciseReps).text = "${ex.reps} ${ex.unit}"
                 exerciseView.findViewById<TextView>(R.id.tvExerciseWeight).text =
                     if (ex.weightKg != null) "${ex.weightKg} kg" else ""
 

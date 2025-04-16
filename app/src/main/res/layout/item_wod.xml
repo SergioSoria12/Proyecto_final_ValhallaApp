@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
-    android:layout_marginBottom="16dp"
-    android:radius="16dp"
-    android:background="#ffffff">
+    android:layout_height="200dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/rounded_background_grey"
+    android:clipToOutline="true"
+    android:elevation="4dp">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/imageWod"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="Imagen WOD" />
 
-        <ImageView
-            android:id="@+id/imageWod"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/wod2"
-            android:background="@drawable/rounded_background" />
-
-        <TextView
-            android:id="@+id/titleWod"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imageWod"
-            android:padding="12dp"
-            android:text="Nombre del WOD"
-            android:textColor="#25476a"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/titleWod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Nombre WOD"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"/>
+</FrameLayout>

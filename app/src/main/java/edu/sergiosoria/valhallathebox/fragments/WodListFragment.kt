@@ -1,11 +1,13 @@
 package edu.sergiosoria.valhallathebox.fragments
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -44,6 +46,16 @@ class WodListFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.wodRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        // 👉 Añadir separación entre ítems
+        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+            ) {
+                outRect.set(16, 16, 16, 16) // Margen en cada lado de la tarjeta
+            }
+        })
+
         wodAdapter = WodAdapter(wodList) { wod ->
             viewLifecycleOwner.lifecycleScope.launch {
                 val wodWithBlocks = db.wodDao().getWodByIdFlow(wod.wodId).first()
@@ -54,7 +66,14 @@ class WodListFragment : Fragment() {
         }
         recyclerView.adapter = wodAdapter
 
-        view.findViewById<FloatingActionButton>(R.id.fabAddWod).setOnClickListener {
+        val fab = view.findViewById<FloatingActionButton>(R.id.fabAddWod)
+
+        fab.setOnClickListener {
+            // 👇 Animación bounce
+            val bounce = AnimationUtils.loadAnimation(requireContext(), R.anim.bounce)
+            fab.startAnimation(bounce)
+
+            // 👇 Abrir el fragmento para crear el WOD
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, CreateWodFragment())
                 .addToBackStack(null)

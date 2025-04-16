@@ -34,9 +34,16 @@ class WodAdapter(
         val wod = wodList[position]
         holder.title.text = wod.name
 
-        wod.imageUri?.let {
-            holder.image.setImageURI(Uri.parse(it))
-        } ?: holder.image.setImageResource(R.drawable.wod2)
+
+        if (!wod.imageUri.isNullOrEmpty()) {
+            holder.image.setImageURI(Uri.parse(wod.imageUri))
+        } else {
+            holder.image.setImageResource(R.drawable.wod2) // por si no hay imagen
+        }
+
+        // Animación al cargar
+        holder.itemView.alpha = 0f
+        holder.itemView.animate().alpha(1f).setDuration(500).start()
 
         holder.itemView.setOnClickListener {
             onWodClick(wod)

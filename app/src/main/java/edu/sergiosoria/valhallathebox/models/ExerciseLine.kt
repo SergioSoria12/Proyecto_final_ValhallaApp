@@ -17,5 +17,6 @@ data class ExerciseLine(
     var blockOwnerId: Long = 0,
     var name: String = "",
     var reps: Int = 0,
+    var unit: String = "reps",
     var weightKg: Int? = null
 )

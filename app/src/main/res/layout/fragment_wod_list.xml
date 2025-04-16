@@ -3,24 +3,40 @@
     android:id="@+id/wodListRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#000000"
+    android:orientation="vertical"
+    android:paddingTop="32dp">
 
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvMisWods"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mis WODs"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue_main"
+        android:layout_margin="16dp" />
+
+    <!-- Lista -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wodRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/tvMisWods"
         android:padding="16dp"
         android:clipToPadding="false"
-        android:layout_above="@+id/fabAddWod" />
+        android:layout_marginBottom="96dp" />
 
+    <!-- Botón añadir -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddWod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
         android:src="@android:drawable/ic_input_add"
-        android:tint="#ffffff"
-        android:backgroundTint="#25476a" />
+        android:backgroundTint="@color/blue_main"
+        android:tint="@android:color/white" />
 </RelativeLayout>
