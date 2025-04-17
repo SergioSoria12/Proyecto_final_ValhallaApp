@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp">
     <ScrollView
         android:id="@+id/scrollContent"
         android:layout_width="match_parent"
@@ -14,141 +15,121 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Logo + Bienvenida -->
-            <LinearLayout
-                android:layout_width="match_parent"
+        <!-- Logo + Bienvenida -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="150dp"
+                android:layout_height="90dp"
+                android:src="@drawable/logoapp"
+                android:contentDescription="Logo" />
+
+            <TextView
+                android:id="@+id/tvWelcomeMessage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginStart="16dp"
+                android:text="Bienvenido Coach"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/ivLogo"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/logoapp"
-                    android:contentDescription="Logo" />
+        <!-- Usuario -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/tvWelcomeMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Bienvenido Coach"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/ivProfileImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_user_placeholder"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle_blue_border"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="Foto de perfil"
+                android:clipToOutline="true"
+                />
 
-            <!-- Usuario: Avatar + Nombre -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:text="Nombre Apellido"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_weight="1"/>
 
-                <ImageView
-                    android:id="@+id/ivProfileImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_user_placeholder"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/avatar_background"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="Foto de perfil" />
+            <ImageButton
+                android:id="@+id/btnLogout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_logout"
+                android:contentDescription="Cerrar sesión"
+                android:paddingLeft="20dp"/>
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvUserName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre Apellido"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+        <!-- Título WODS favoritos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical">
 
-            <!-- Próximas clases -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Próximas clases"
+                android:text="WODS Favoritos"
                 android:textColor="@color/blue_main"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp" />
+                android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/classList"
+        </LinearLayout>
+
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:scrollbars="none">
 
-            <!-- Últimos WODs -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical">
-
-                <TextView
+                <LinearLayout
+                    android:id="@+id/favoriteWodContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Últimos WODs"
-                    android:textColor="@color/blue_main"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
-                <TextView
-                    android:id="@+id/tvViewAllWods"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver todo"
-                    android:textColor="@color/blue_main"
-                    android:textSize="14sp"
-                    android:layout_gravity="end" />
-            </LinearLayout>
+        <!-- Título Tienda favoritos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical">
 
-            <LinearLayout
-                android:id="@+id/wodAccordion"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:text="Tienda Favoritos"
+                android:textColor="@color/blue_main"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <!-- Tienda -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tienda"
-                    android:textColor="@color/blue_main"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvViewAllShop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver todo"
-                    android:textColor="@color/blue_main"
-                    android:textSize="14sp"
-                    android:layout_gravity="end" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/shopAccordion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

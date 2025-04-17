@@ -72,11 +72,11 @@
             android:id="@+id/tvRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¿No tienes cuenta? Regístrate"
+            android:text="@string/login_subrayado"
             android:textSize="14sp"
             android:textColor="@color/blue_main"
             android:layout_marginTop="15dp"
-            android:textStyle="bold"
+            android:textStyle=""
             android:clickable="true"
             android:focusable="true"/>
     </LinearLayout>

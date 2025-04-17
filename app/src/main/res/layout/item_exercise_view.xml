@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
-    android:background="@drawable/rounded_background_grey"
     android:layout_marginBottom="8dp"
     android:gravity="center_vertical">
 
@@ -14,14 +13,14 @@
         android:layout_weight="2"
         android:text="Push Jerk"
         android:textStyle="bold"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/holo_green_dark" />
 
     <TextView
         android:id="@+id/tvExerciseReps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="3 reps"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/holo_red_light" />
 
     <TextView
         android:id="@+id/tvExerciseWeight"
@@ -29,6 +28,6 @@
         android:layout_height="wrap_content"
         android:text="45 kg"
         android:layout_marginStart="8dp"
-        android:textColor="#25476a"
+        android:textColor="@color/blue_main"
         android:textStyle="bold" />
 </LinearLayout>

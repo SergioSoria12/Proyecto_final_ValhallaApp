@@ -33,9 +33,9 @@
         <activity android:name=".activities.MainActivity"/>
         <activity android:name=".fragments.WodListFragment" />
         <activity android:name=".fragments.CreateWodFragment" />
-        <activity android:name=".activities.ProfileActivity" />
-        <activity android:name=".activities.ShopActivity" />
-        <activity android:name=".activities.HoraryActivity" />
+        <activity android:name=".fragments.ProfileFragment" />
+        <activity android:name=".fragments.ShopFragment" />
+        <activity android:name=".fragments.ScheduleFragment" />
     </application>
 
 </manifest>

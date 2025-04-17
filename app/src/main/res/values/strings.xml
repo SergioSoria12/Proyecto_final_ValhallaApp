@@ -3,6 +3,95 @@
     <string-array name="unidades">
         <item>reps</item>
         <item>cal</item>
-        <item>metros</item>
+        <item>m</item>
+        <item>min</item>
+        <item>seg</item>
     </string-array>
+    <string-array name="ejercicios_crossfit">
+        <!-- Calisténicos -->
+        <item>Burpees</item>
+        <item>Pull-Ups</item>
+        <item>Chest to Bar</item>
+        <item>Muscle-Ups</item>
+        <item>Push-Ups</item>
+        <item>Handstand Push-Ups</item>
+        <item>Toes to Bar</item>
+        <item>V-Ups</item>
+        <item>Sit-Ups</item>
+        <item>Air Squats</item>
+        <item>Jumping Squats</item>
+        <item>Wall Walks</item>
+
+        <!-- Halterofilia -->
+        <item>Deadlift</item>
+        <item>Clean</item>
+        <item>Power Clean</item>
+        <item>Hang Clean</item>
+        <item>Squat Clean</item>
+        <item>Snatch</item>
+        <item>Power Snatch</item>
+        <item>Hang Snatch</item>
+        <item>Squat Snatch</item>
+        <item>Thruster</item>
+        <item>Push Jerk</item>
+        <item>Split Jerk</item>
+        <item>Push Press</item>
+        <item>Strict Press</item>
+        <item>Overhead Squat</item>
+        <item>Front Squat</item>
+        <item>Back Squat</item>
+
+        <!-- Kettlebell y Dumbbell -->
+        <item>Kettlebell Swing</item>
+        <item>Kettlebell Snatch</item>
+        <item>Kettlebell Clean</item>
+        <item>Kettlebell Goblet Squat</item>
+        <item>Dumbbell Snatch</item>
+        <item>Dumbbell Clean and Jerk</item>
+        <item>Dumbbell Thruster</item>
+        <item>Dumbbell Lunges</item>
+
+        <!-- Gimnásticos -->
+        <item>Box Jumps</item>
+        <item>Pistol Squats</item>
+        <item>Lunges</item>
+        <item>Jump Rope</item>
+        <item>Double Unders</item>
+        <item>Triple Unders</item>
+        <item>Rope Climb</item>
+        <item>Bear Crawl</item>
+        <item>Crab Walk</item>
+
+        <!-- Cardio -->
+        <item>Run</item>
+        <item>Sprint</item>
+        <item>Bike</item>
+        <item>Assault Bike</item>
+        <item>Echo Bike</item>
+        <item>Row</item>
+        <item>Ski Erg</item>
+        <item>Burpee Broad Jump</item>
+
+        <!-- Strongman -->
+        <item>Sled Push</item>
+        <item>Sled Pull</item>
+        <item>Sandbag Carry</item>
+        <item>Farmers Carry</item>
+        <item>Yoke Carry</item>
+
+        <!-- Comp. -->
+        <item>Man Makers</item>
+        <item>Devil Press</item>
+        <item>Wall Balls</item>
+        <item>Ball Slams</item>
+        <item>Ground to Overhead</item>
+
+        <!-- Especiales -->
+        <item>Rest</item>
+        <item>Hold Plank</item>
+        <item>Hollow Hold</item>
+        <item>Superman Hold</item>
+        <item>Handstand Hold</item>
+    </string-array>
+    <string name="login_subrayado"><u>¿No tienes cuenta? Registrate</u></string>
 </resources>

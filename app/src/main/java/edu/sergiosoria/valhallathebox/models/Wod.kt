@@ -10,5 +10,6 @@ data class Wod(
     var type: String = "", // "EMOM", "AMRAP", etc.
     var imageUri: String? = null, // URI de la imagen
     var rounds: Int = 0,
-    var roundTime: Int = 0 // en minutos
+    var roundTime: Int = 0, // en minutos
+    var isFavorite: Boolean = false  // ⭐ Nuevo campo
 )

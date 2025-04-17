@@ -6,24 +6,35 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import edu.sergiosoria.valhallathebox.R
 import edu.sergiosoria.valhallathebox.fragments.HomeFragment
+import edu.sergiosoria.valhallathebox.fragments.ProfileFragment
+import edu.sergiosoria.valhallathebox.fragments.ScheduleFragment
+import edu.sergiosoria.valhallathebox.fragments.ShopFragment
 import edu.sergiosoria.valhallathebox.fragments.WodListFragment
+import edu.sergiosoria.valhallathebox.utils.SyncUtils
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Fragmento inicial
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, HomeFragment())
             .commit()
 
-        // Navbar (opcional: navegación entre fragments o activities)
+        // 🔁 Sincronización con Firebase
+        lifecycleScope.launch {
+            SyncUtils.syncAllToFirebase() // Room → Firebase
+        }
+        SyncUtils.syncFirebaseToRoom(this) // Firebase → Room
+
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav.selectedItemId = R.id.nav_home
 
@@ -35,39 +46,33 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                     true
                 }
-
                 R.id.nav_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, ProfileFragment())
+                        .commit()
                     true
                 }
-
                 R.id.nav_wod -> {
-                    // Ocultar main y mostrar fragmento
-                    findViewById<ScrollView>(R.id.scrollContent).visibility = View.GONE
-                    findViewById<FrameLayout>(R.id.fragment_container).visibility = View.VISIBLE
-
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, WodListFragment())
                         .addToBackStack(null)
                         .commit()
                     true
                 }
-
                 R.id.nav_schedule -> {
-                    startActivity(Intent(this, HoraryActivity::class.java))
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, ScheduleFragment())
+                        .commit()
                     true
                 }
-
                 R.id.nav_shop -> {
-                    startActivity(Intent(this, ShopActivity::class.java))
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, ShopFragment())
+                        .commit()
                     true
                 }
-
                 else -> false
             }
         }
-
-
     }
-
 }

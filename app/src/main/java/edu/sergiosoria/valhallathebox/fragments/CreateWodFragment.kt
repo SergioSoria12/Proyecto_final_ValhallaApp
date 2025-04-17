@@ -1,7 +1,7 @@
 package edu.sergiosoria.valhallathebox.fragments
 
-import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +9,17 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.ScrollView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.FirebaseDatabase
@@ -29,7 +33,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import edu.sergiosoria.valhallathebox.ValhallaApp
 import edu.sergiosoria.valhallathebox.utils.WodWithBlocks
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import edu.sergiosoria.valhallathebox.utils.getWodImageRes
+
 
 class CreateWodFragment : Fragment() {
 
@@ -38,40 +44,31 @@ class CreateWodFragment : Fragment() {
     private val addedExercises = mutableListOf<View>()
     private var editWodId: Long? = null
     private var isEditing = false
-    private var selectedImageUri: String? = null
+    private var selectedImageName: String? = null
     private lateinit var imagePreview: ImageView
+    private var loadedBlockId: Long? = null
+    private var loadedExercises: List<ExerciseLine> = emptyList()
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_create_wod, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         db = ValhallaApp.database
         exerciseList = view.findViewById(R.id.exerciseList)
-
-        //Inicializamos el imageView
         imagePreview = view.findViewById(R.id.wodImagePreview)
 
         view.findViewById<Button>(R.id.btnSelectImage).setOnClickListener {
             showImagePickerDialog()
         }
 
+        // Mostrar secciones segun el tipo (EMOM o AMRAP)
         val radioType = view.findViewById<RadioGroup>(R.id.radioType)
         val layoutEmom = view.findViewById<LinearLayout>(R.id.layoutEmomData)
         val inputAmrap = view.findViewById<EditText>(R.id.inputAmrapTime)
-
         radioType.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == R.id.rbEmom) {
-                layoutEmom.visibility = View.VISIBLE
-                inputAmrap.visibility = View.GONE
-            } else {
-                layoutEmom.visibility = View.GONE
-                inputAmrap.visibility = View.VISIBLE
-            }
+            layoutEmom.visibility = if (checkedId == R.id.rbEmom) View.VISIBLE else View.GONE
+            inputAmrap.visibility = if (checkedId == R.id.rbAmrap) View.VISIBLE else View.GONE
         }
 
         view.findViewById<Button>(R.id.btnAddExercise).setOnClickListener {
@@ -82,50 +79,46 @@ class CreateWodFragment : Fragment() {
             saveWod(view)
         }
 
-        // Si venimos a editar
+        // Cargar datos si estamos editando
         editWodId = arguments?.getLong("EDIT_WOD_ID")
         if (editWodId != null) {
             isEditing = true
             lifecycleScope.launch(Dispatchers.IO) {
-                val wodWithBlocks = db.wodDao().getWodByIdFlow(editWodId!!).first()
-                withContext(Dispatchers.Main) {
-                    if (wodWithBlocks != null) {
-                        loadWodDataIntoForm(wodWithBlocks)
+                val wodWithBlocks = db.wodDao().getWodByIdFlow(editWodId!!).firstOrNull()
+                wodWithBlocks?.let {
+                    loadedBlockId = it.blocks.firstOrNull()?.block?.blockId
+                    loadedExercises = it.blocks.firstOrNull()?.exercises ?: emptyList()
+                    withContext(Dispatchers.Main) {
+                        loadWodDataIntoForm(it)
                     }
                 }
             }
         }
     }
 
-    private fun addExerciseInput(
-        name: String = "",
-        reps: Int = 0,
-        weight: Int? = null,
-        unit: String = "reps"
-
-    ) {
+    private fun addExerciseInput(name: String = "", reps: Int = 0, weight: Int? = null, unit: String = "reps") {
         val inflater = LayoutInflater.from(requireContext())
         val view = inflater.inflate(R.layout.item_exercise_input, exerciseList, false)
-        view.setBackgroundResource(R.drawable.rounded_background_grey)
+        view.setBackgroundResource(R.drawable.rounded_button_grey)
         view.setPadding(16, 16, 16, 16)
 
-        //Autocomplete para nombres
-        val ejercicios = listOf("Burpees", "Hand Clean", "Push Jerk", "Thruster", "Row", "Bike")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ejercicios)
-        view.findViewById<AutoCompleteTextView>(R.id.inputName).setAdapter(adapter)
-        view.findViewById<AutoCompleteTextView>(R.id.inputName).setText(name)
+        val ejercicios = resources.getStringArray(R.array.ejercicios_crossfit)
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, ejercicios)
 
-        // Reps
+        val inputName = view.findViewById<AutoCompleteTextView>(R.id.inputName)
+        inputName.setAdapter(adapter)
+        inputName.setText(name)
+
+        // 👇 Esto hace que el dropdown sea tan ancho como la mitad pantalla
+        val dropdownWidth = (resources.displayMetrics.widthPixels * 0.5).toInt()
+        inputName.setDropDownWidth(dropdownWidth)
+
         view.findViewById<EditText>(R.id.inputReps).setText(if (reps > 0) reps.toString() else "")
+        view.findViewById<EditText>(R.id.inputWeight).setText(weight?.toString() ?: "")
 
-        // Spinner unidad Aqui asignamos (reps, cal, m)
         val spinnerUnidad = view.findViewById<Spinner>(R.id.spinnerUnidad)
         val unidades = resources.getStringArray(R.array.unidades)
-        val indexUnidad = unidades.indexOf(unit)
-        if (indexUnidad >= 0) spinnerUnidad.setSelection(indexUnidad)
-
-        //Peso
-        view.findViewById<EditText>(R.id.inputWeight).setText(weight?.toString() ?: "")
+        spinnerUnidad.setSelection(unidades.indexOf(unit))
 
         exerciseList.addView(view)
         addedExercises.add(view)
@@ -133,25 +126,29 @@ class CreateWodFragment : Fragment() {
 
     private fun loadWodDataIntoForm(wodWithBlocks: WodWithBlocks) {
         val view = requireView()
-
         val wod = wodWithBlocks.wod
-        val block = wodWithBlocks.blocks.firstOrNull()
-        val exercises = block?.exercises ?: emptyList()
 
-        // Tipo
+        view.findViewById<EditText>(R.id.inputWodName).setText(wod.name)
+
+        selectedImageName = wod.imageUri
+        selectedImageName?.let {
+            val resId = getWodImageRes(it)
+            imagePreview.setImageResource(resId)
+            imagePreview.visibility = View.VISIBLE
+        }
+
+        // Selección de tipo y nivel
         when (wod.type) {
             "EMOM" -> view.findViewById<RadioButton>(R.id.rbEmom).isChecked = true
             "AMRAP" -> view.findViewById<RadioButton>(R.id.rbAmrap).isChecked = true
         }
 
-        // Nivel
-        when (block?.block?.level) {
+        when (wodWithBlocks.blocks.firstOrNull()?.block?.level) {
             "scaled" -> view.findViewById<RadioButton>(R.id.rbScaled).isChecked = true
             "rx" -> view.findViewById<RadioButton>(R.id.rbRX).isChecked = true
             "elite" -> view.findViewById<RadioButton>(R.id.rbElite).isChecked = true
         }
 
-        // Rondas / tiempo
         if (wod.type == "EMOM") {
             view.findViewById<EditText>(R.id.inputRounds).setText(wod.rounds.toString())
             view.findViewById<EditText>(R.id.inputRoundTime).setText(wod.roundTime.toString())
@@ -159,8 +156,7 @@ class CreateWodFragment : Fragment() {
             view.findViewById<EditText>(R.id.inputAmrapTime).setText(wod.roundTime.toString())
         }
 
-        // Ejercicios
-        exercises.forEach {
+        wodWithBlocks.blocks.firstOrNull()?.exercises?.forEach {
             addExerciseInput(it.name, it.reps, it.weightKg, it.unit)
         }
     }
@@ -171,81 +167,135 @@ class CreateWodFragment : Fragment() {
             R.id.rbAmrap -> "AMRAP"
             else -> "EMOM"
         }
-
         val level = when (view.findViewById<RadioGroup>(R.id.radioLevel).checkedRadioButtonId) {
             R.id.rbScaled -> "scaled"
             R.id.rbRX -> "rx"
             R.id.rbElite -> "elite"
             else -> "scaled"
         }
-
-        val rounds = if (type == "EMOM") {
-            view.findViewById<EditText>(R.id.inputRounds).text.toString().toIntOrNull() ?: 0
-        } else 1
-
-        val roundTime = if (type == "EMOM") {
+        val rounds = if (type == "EMOM") view.findViewById<EditText>(R.id.inputRounds).text.toString().toIntOrNull() ?: 0 else 1
+        val roundTime = if (type == "EMOM")
             view.findViewById<EditText>(R.id.inputRoundTime).text.toString().toIntOrNull() ?: 0
-        } else {
+        else
             view.findViewById<EditText>(R.id.inputAmrapTime).text.toString().toIntOrNull() ?: 0
-        }
-
         val wodName = view.findViewById<EditText>(R.id.inputWodName).text.toString()
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val wodId = if (isEditing && editWodId != null) {
-                // Eliminamos el anterior
-                db.wodDao().deleteWod(Wod(wodId = editWodId!!))
-                editWodId!!
-            } else {
-                db.wodDao().insertWod(Wod(name = wodName, type = type, rounds = rounds, roundTime = roundTime))
-            }
+            val wod = Wod(
+                wodId = editWodId ?: 0L,
+                name = wodName,
+                type = type,
+                rounds = rounds,
+                roundTime = roundTime,
+                imageUri = selectedImageName
+            )
+            val wodId = db.wodDao().insertWod(wod)
 
-            val blockId = db.wodDao().insertBlock(WodBlock(wodOwnerId = wodId, level = level))
+            if (isEditing) db.wodDao().deleteBlocksByWodId(wodId)
 
-            for (v in addedExercises) {
+            val blockObj = WodBlock(blockId = loadedBlockId ?: 0L, wodOwnerId = wodId, level = level)
+            val blockId = db.wodDao().insertBlock(blockObj)
+
+            db.wodDao().deleteExercisesByBlockId(blockId)
+
+            for (i in addedExercises.indices) {
+                val v = addedExercises[i]
                 val name = v.findViewById<EditText>(R.id.inputName).text.toString()
                 val reps = v.findViewById<EditText>(R.id.inputReps).text.toString().toIntOrNull() ?: 0
                 val weight = v.findViewById<EditText>(R.id.inputWeight).text.toString().toIntOrNull()
                 val unit = v.findViewById<Spinner>(R.id.spinnerUnidad).selectedItem.toString()
 
-                db.wodDao().insertExercise(
-                    ExerciseLine(blockOwnerId = blockId, name = name, reps = reps, unit = unit, weightKg = weight)
-                )
+                val previousId = loadedExercises.getOrNull(i)?.exerciseId ?: 0L
+                val exercise = ExerciseLine(previousId, blockId, name, reps, unit, weight)
+                db.wodDao().insertExercise(exercise)
             }
 
-            // 🔥 SUBIR A FIREBASE
+            db.wodDao().updateImage(wodId, selectedImageName)
+
+            // Subida a Firebase
             val firebaseDb = FirebaseDatabase.getInstance("https://valhallathebox-default-rtdb.europe-west1.firebasedatabase.app/")
             val wodRef = firebaseDb.getReference("wods")
-            wodRef.child(wodId.toString()).setValue(Wod(wodId = wodId, name = "WOD creado", type = type, rounds = rounds, roundTime = roundTime))
+            if (isEditing && editWodId != null) {
+                wodRef.child(editWodId.toString()).removeValue()
+            }
+            wodRef.child(wodId.toString()).setValue(wod)
+            val blocksRef = wodRef.child("$wodId/blocks")
+            blocksRef.child(blockId.toString()).setValue(blockObj)
+            val exRef = blocksRef.child("$blockId/exercises")
+            for (i in addedExercises.indices) {
+                val v = addedExercises[i]
+                val name = v.findViewById<EditText>(R.id.inputName).text.toString()
+                val reps = v.findViewById<EditText>(R.id.inputReps).text.toString().toIntOrNull() ?: 0
+                val weight = v.findViewById<EditText>(R.id.inputWeight).text.toString().toIntOrNull()
+                val unit = v.findViewById<Spinner>(R.id.spinnerUnidad).selectedItem.toString()
+                val exercise = ExerciseLine(0L, blockId, name, reps, unit, weight)
+                exRef.push().setValue(exercise)
+            }
 
-            // Guardar la imagen en Room
-            db.wodDao().updateImage(wodId, selectedImageUri)
-            // Volvemos al hilo principal
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), "WOD guardado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "WOD guardado correctamente", Toast.LENGTH_SHORT).show()
                 parentFragmentManager.popBackStack()
             }
         }
     }
 
     private fun showImagePickerDialog() {
-        val images = listOf(
-            R.drawable.wod1,
-            R.drawable.wod2,
-        )
-        val imageNames = listOf("WOD 1", "WOD 2", "WOD 3", "WOD 4")
+        val wodNames = (1..12).map { "WOD $it" }
 
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Selecciona una imagen")
-
-        builder.setItems(imageNames.toTypedArray()) { _, which ->
-            val resId = images[which]
-            selectedImageUri = "android.resource://${requireContext().packageName}/$resId"
-            imagePreview.setImageURI(Uri.parse(selectedImageUri))
-            imagePreview.visibility = View.VISIBLE
+        val gridLayout = GridLayout(requireContext()).apply {
+            columnCount = 3
+            setPadding(32, 32, 32, 32)
+            alignmentMode = GridLayout.ALIGN_MARGINS
+            useDefaultMargins = true
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                gravity = Gravity.CENTER
+            }
         }
 
-        builder.setNegativeButton("Cancelar", null)
-        builder.show()
+        val scrollView = ScrollView(requireContext()).apply {
+            addView(gridLayout)
+            setPadding(16, 16, 16, 16)
+        }
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Selecciona una imagen")
+            .setView(scrollView)
+            .setNegativeButton("Cancelar", null)
+            .create()
+
+        wodNames.forEach { name ->
+            val resId = getWodImageRes(name)
+
+            val container = FrameLayout(requireContext()).apply {
+                layoutParams = ViewGroup.MarginLayoutParams(250, 250).apply {
+                    setMargins(16, 16, 16, 16)
+                }
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_border_wod_image)
+            }
+
+            val imageView = ImageView(requireContext()).apply {
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
+                setImageResource(resId)
+                scaleType = ImageView.ScaleType.CENTER_CROP
+                contentDescription = name
+                setOnClickListener {
+                    selectedImageName = name
+                    imagePreview.setImageResource(resId)
+                    imagePreview.visibility = View.VISIBLE
+                    dialog.dismiss()
+                }
+            }
+
+            container.addView(imageView)
+            gridLayout.addView(container)
+        }
+
+        dialog.show()
     }
 }

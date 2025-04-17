@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.database.FirebaseDatabase
 import edu.sergiosoria.valhallathebox.R
 import edu.sergiosoria.valhallathebox.ValhallaApp
 import edu.sergiosoria.valhallathebox.fragments.CreateWodFragment
@@ -38,20 +39,17 @@ class WodDetailBottomSheet(
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val tvWodType = view.findViewById<TextView>(R.id.tvWodType)
         val tvWodName = view.findViewById<TextView>(R.id.tvWodName)
         val blocksContainer = view.findViewById<LinearLayout>(R.id.blocksContainer)
         val tvRounds = view.findViewById<TextView>(R.id.tvRounds)
         val tvTime = view.findViewById<TextView>(R.id.tvTime)
-        val imagePreview = view.findViewById<ImageView>(R.id.imageWodPreview)
 
         val wod = wodWithBlocks.wod
 
-        wod.imageUri?.let {
-            imagePreview.setImageURI(Uri.parse(it))
-            imagePreview.visibility = View.VISIBLE
-        }
 
-        tvWodName.text = wod.type
+        tvWodType.text = wod.type
+        tvWodName.text = wod.name
         tvRounds.text = "${wod.rounds} RONDAS"
         tvTime.text = " - ${wod.roundTime} MIN ROUND"
 
@@ -104,6 +102,11 @@ class WodDetailBottomSheet(
                     lifecycleScope.launch(Dispatchers.IO) {
                         val db = ValhallaApp.database
                         db.wodDao().deleteWod(wodWithBlocks.wod)
+
+                        // 🔥 ELIMINAR EN FIREBASE
+                        val firebaseDb = FirebaseDatabase.getInstance("https://valhallathebox-default-rtdb.europe-west1.firebasedatabase.app/")
+                        val wodRef = firebaseDb.getReference("wods").child(wodWithBlocks.wod.wodId.toString())
+                        wodRef.removeValue()
 
                         withContext(Dispatchers.Main) {
                             Toast.makeText(requireContext(), "WOD eliminado", Toast.LENGTH_SHORT).show()

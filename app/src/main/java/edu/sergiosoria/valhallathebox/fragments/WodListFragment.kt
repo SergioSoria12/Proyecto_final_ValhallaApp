@@ -56,14 +56,23 @@ class WodListFragment : Fragment() {
             }
         })
 
-        wodAdapter = WodAdapter(wodList) { wod ->
-            viewLifecycleOwner.lifecycleScope.launch {
-                val wodWithBlocks = db.wodDao().getWodByIdFlow(wod.wodId).first()
-                wodWithBlocks?.let {
-                    WodDetailBottomSheet(it).show(parentFragmentManager, "WodDetail")
+        wodAdapter = WodAdapter(
+            wodList,
+            onWodClick = { wod ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val wodWithBlocks = db.wodDao().getWodByIdFlow(wod.wodId).first()
+                    wodWithBlocks?.let {
+                        WodDetailBottomSheet(it).show(parentFragmentManager, "WodDetail")
+                    }
+                }
+            },
+            onFavoriteClick = { wod ->
+                val updatedWod = wod.copy(isFavorite = !wod.isFavorite)
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                    db.wodDao().updateWod(updatedWod)
                 }
             }
-        }
+        )
         recyclerView.adapter = wodAdapter
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fabAddWod)

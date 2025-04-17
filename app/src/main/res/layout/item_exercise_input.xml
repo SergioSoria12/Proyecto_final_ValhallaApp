@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:layout_marginBottom="12dp"
-    android:background="@drawable/rounded_background_grey"
+    android:background="@drawable/edittext_bg"
     android:gravity="center_vertical">
 
     <!-- Picker del ejercicio -->
@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="Cantidad"
+        android:hint="Cant"
         android:inputType="number"
         android:textColor="@android:color/white"
         android:textColorHint="#aaaaaa"

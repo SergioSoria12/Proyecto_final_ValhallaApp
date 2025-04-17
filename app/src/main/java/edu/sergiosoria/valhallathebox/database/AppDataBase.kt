@@ -9,7 +9,7 @@ import edu.sergiosoria.valhallathebox.models.Wod
 import edu.sergiosoria.valhallathebox.models.WodBlock
 import edu.sergiosoria.valhallathebox.models.ExerciseLine
 
-@Database(entities = [User::class, Wod::class, WodBlock::class, ExerciseLine::class], version = 10, exportSchema = false)
+@Database(entities = [User::class, Wod::class, WodBlock::class, ExerciseLine::class], version = 15, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun wodDao(): WodDao

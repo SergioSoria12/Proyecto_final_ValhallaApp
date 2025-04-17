@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -55,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="Avatar"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_user_placeholder" />
             </FrameLayout>
 
@@ -81,8 +80,8 @@
                     android:layout_width="142dp"
                     android:layout_height="40dp"
                     android:background="@drawable/rounded_button"
-                    android:drawableLeft="@drawable/ic_avatar"
-                    android:text="Avatar"
+                    android:drawableLeft="@drawable/ic_avatar_white"
+                    android:text="Foto"
                     android:textAllCaps="false"
                     android:textColor="@color/white" />
             </LinearLayout>
